@@ -7,46 +7,55 @@
 </head>
 <body style="background: #000; color: white; font-family: Montserrat, sans-serif;">
 
-    <nav style="padding: 20px;"><a href="index.html" style="color: white;">← Powrót</a></nav>
-    <h1 style="text-align: center;">OFERTA AUT</h1>
+    <nav style="padding: 20px;"><a href="index.html" style="color: white; text-decoration: none;">← Powrót do strony głównej</a></nav>
+    <h1 style="text-align: center; letter-spacing: 2px;">OFERTA AUT</h1>
 
-    <div id="lista" class="stock-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px;">
+    <div id="lista" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 40px;">
         </div>
 
     <script>
-        async function start() {
+        // Ta funkcja jest odporniejsza na błędy
+        async function ladujAuta() {
             const kontener = document.getElementById('lista');
-            // Twoje dane logowania do pobierania:
             const user = "michalmailnaspam-ops";
             const repo = "dream-car-heaven";
             
             try {
+                // Pobieramy listę plików z folderu auta
                 const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/content/auta`);
+                if(!res.ok) throw new Error("Problem z GitHub");
+                
                 const pliki = await res.json();
+                kontener.innerHTML = ""; // Czyścimy napis o ładowaniu
 
                 for (let plik of pliki) {
                     if (plik.name.endsWith('.md')) {
                         const tekstRes = await fetch(plik.download_url);
                         const t = await tekstRes.text();
 
-                        // Wyciąganie danych bez błędów
-                        const tytul = t.split('title:')[1]?.split('\n')[0].replace(/"/g, '').trim();
-                        const cena = t.split('price:')[1]?.split('\n')[0].replace(/"/g, '').trim();
-                        const foto = t.split('image:')[1]?.split('\n')[0].replace(/"/g, '').trim();
+                        // Wyciąganie danych z pliku tekstowego
+                        const tytul = t.match(/title:\s*"(.*)"/)?.[1] || t.match(/title:\s*(.*)/)?.[1] || "Auto";
+                        const cena = t.match(/price:\s*"(.*)"/)?.[1] || t.match(/price:\s*(.*)/)?.[1] || "Zadzwoń";
+                        const foto = t.match(/image:\s*"(.*)"/)?.[1] || t.match(/image:\s*(.*)/)?.[1] || "";
+                        const silnik = t.match(/engine:\s*"(.*)"/)?.[1] || t.match(/engine:\s*(.*)/)?.[1] || "";
 
                         kontener.innerHTML += `
-                            <div style="background: #111; padding: 15px; border-radius: 10px; border: 1px solid #333; text-align: center;">
-                                <img src="${foto}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 5px;">
-                                <h3 style="margin: 15px 0 5px;">${tytul}</h3>
-                                <div style="color: #ffd700; font-size: 1.4rem; font-weight: bold;">${cena}</div>
+                            <div style="background: #111; padding: 20px; border-radius: 15px; border: 1px solid #222; text-align: center; transition: 0.3s;">
+                                <div style="width: 100%; height: 220px; border-radius: 10px; background-image: url('${foto}'); background-size: cover; background-position: center;"></div>
+                                <h3 style="margin: 20px 0 10px; text-transform: uppercase;">${tytul}</h3>
+                                <p style="color: #888; margin-bottom: 15px;">${silnik}</p>
+                                <div style="color: #ffd700; font-size: 1.6rem; font-weight: 900;">${cena}</div>
                             </div>`;
                     }
                 }
             } catch (e) {
-                kontener.innerHTML = "Błąd ładowania. Odśwież stronę.";
+                kontener.innerHTML = `<div style="grid-column: 1/-1; text-align: center;">
+                    <p>Nie udało się pobrać aut bezpośrednio z bazy.</p>
+                    <p>Upewnij się, że w panelu /admin masz dodane chociaż jedno auto.</p>
+                </div>`;
             }
         }
-        start();
+        ladujAuta();
     </script>
 </body>
 </html>
