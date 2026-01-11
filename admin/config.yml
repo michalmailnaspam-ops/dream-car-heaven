@@ -12,9 +12,14 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      - {label: "Tytuł (Marka i Model)", name: "title", widget: "string"}
+      - {label: "Marka i Model", name: "title", widget: "string"}
+      - {label: "Zdjęcie główne (na listę)", name: "image", widget: "image"}
+      - {label: "Galeria zdjęć (szczegóły)", name: "gallery", widget: "list", field: {label: "Zdjęcie", name: "img", widget: "image"}}
       - {label: "Cena", name: "price", widget: "string"}
-      - {label: "Silnik/Moc", name: "engine", widget: "string"}
-      - {label: "Status", name: "status", widget: "select", options: ["Dostępny", "Zarezerwowany", "Sprzedany"]}
-      - {label: "Zdjęcie główne", name: "image", widget: "image"}
-      - {label: "Opis", name: "body", widget: "markdown"}
+      - {label: "Rok produkcji", name: "year", widget: "string"}
+      - {label: "Silnik", name: "engine", widget: "string"}
+      - {label: "Przebieg", name: "mileage", widget: "string"}
+      - {label: "Skrzynia biegów", name: "gearbox", widget: "string"}
+      - {label: "Napęd", name: "drive", widget: "string"}
+      - {label: "Status", name: "status", widget: "select", options: ["Dostępny", "W transporcie", "Zarezerwowany", "Sprzedany"]}
+      - {label: "Opis pojazdu", name: "body", widget: "markdown"}
