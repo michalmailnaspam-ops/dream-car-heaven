@@ -7,6 +7,8 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
 
@@ -140,17 +142,10 @@
                 </div>
             </div>
             <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2543.518731383567!2d19.7424669!3d50.3941725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471719c8d2345679%3A0x6e7b1a6c4c6e9f1a!2zWmFkcm_FvGUgMTI4LCAzMi0zNTMgWmFkcm_FvGUsIFBvbHNrYQ!5e0!3m2!1spl!2spl!4v1700000000000!5m2!1spl!2spl" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2542.482024095593!2d19.743128!3d50.413156!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471719600a7b45f3%3A0x633e079730f78a73!2sZadro%C5%BCe%20128%2C%2032-353%20Zadro%C5%BCe!5e0!3m2!1spl!2spl!4v1710000000000" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
     </section>
-
-    <div id="project-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">×</span>
-            <div id="modal-body"></div>
-        </div>
-    </div>
 
     <footer class="footer">
         <div class="footer-glass">
@@ -160,5 +155,17 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
 </body>
 </html>

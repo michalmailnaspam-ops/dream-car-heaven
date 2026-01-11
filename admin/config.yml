@@ -15,6 +15,6 @@ collections:
       - {label: "Tytuł (Marka i Model)", name: "title", widget: "string"}
       - {label: "Cena", name: "price", widget: "string"}
       - {label: "Silnik/Moc", name: "engine", widget: "string"}
-      - {label: "Status (Dostępny/Rezerwacja)", name: "status", widget: "select", options: ["Dostępny", "Zarezerwowany", "Sprzedany"]}
+      - {label: "Status", name: "status", widget: "select", options: ["Dostępny", "Zarezerwowany", "Sprzedany"]}
       - {label: "Zdjęcie główne", name: "image", widget: "image"}
       - {label: "Opis", name: "body", widget: "markdown"}
