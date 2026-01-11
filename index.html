@@ -65,42 +65,60 @@
         </div>
     </section>
 
-   <section id="oferta" class="stock-section reveal">
+<section id="oferta" class="stock-section reveal">
         <h2 class="section-title">Dostępne od ręki</h2>
         <p class="section-intro">Poniżej wybrane auta z naszej floty. Zobacz pełną listę wszystkich dostępnych modeli.</p>
-        <div class="stock-grid">
-            <div class="stock-card">
-                <div class="stock-badge">DOSTĘPNY</div>
-                <div class="stock-img" style="background-image: url('auto1.jpg');"></div>
-                <div class="stock-info">
-                    <h4>RAM 1500 LARAMIE</h4>
-                    <p>5.7 HEMI | 2021 | 45 000 km</p>
-                    <span class="price">249 000 PLN</span>
-                </div>
-            </div>
-            <div class="stock-card">
-                <div class="stock-badge">DOSTĘPNY</div>
-                <div class="stock-img" style="background-image: url('auto2.jpg');"></div>
-                <div class="stock-info">
-                    <h4>Ford Mustang GT</h4>
-                    <p>5.0 V8 | 2019 | 62 000 km</p>
-                    <span class="price">158 000 PLN</span>
-                </div>
-            </div>
-            <div class="stock-card">
-                <div class="stock-badge">W TRANSPORCIE</div>
-                <div class="stock-img" style="background-image: url('auto3.jpg');"></div>
-                <div class="stock-info">
-                    <h4>Dodge Challenger SRT</h4>
-                    <p>6.4 HEMI | 2022 | 12 000 km</p>
-                    <span class="price">ZAPYTAJ O CENĘ</span>
-                </div>
-            </div>
+        
+        <div id="index-offers-container" class="stock-grid">
+            <p style="color: white; text-align: center; grid-column: 1/-1;">Ładowanie aktualnych ofert...</p>
         </div>
         
         <div style="text-align: center; margin-top: 60px;">
             <a href="oferta.html" class="btn">Zobacz wszystkie oferty</a>
         </div>
+
+        <script>
+            async function loadIndexOffers() {
+                const container = document.getElementById('index-offers-container');
+                try {
+                    const response = await fetch('https://api.github.com/repos/michalmailnaspam-ops/dream-car-heaven/contents/content/auta');
+                    if (!response.ok) throw new Error();
+                    const files = await response.json();
+                    
+                    container.innerHTML = '';
+                    // Bierzemy 3 ostatnio dodane auta
+                    const latestFiles = files.slice(-3).reverse(); 
+
+                    for (const file of latestFiles) {
+                        if (file.name.endsWith('.md')) {
+                            const contentRes = await fetch(file.download_url);
+                            const text = await contentRes.text();
+                            
+                            const getF = (name) => {
+                                const regex = new RegExp(`${name}:\\s*["']?(.*?)["']?(\\n|$)`, 'i');
+                                const match = text.match(regex);
+                                return match ? match[1].trim() : "";
+                            };
+
+                            container.innerHTML += `
+                                <div class="stock-card">
+                                    <div class="stock-badge">${getF("status") || 'DOSTĘPNY'}</div>
+                                    <div class="stock-img" style="background-image: url('${getF("image")}');"></div>
+                                    <div class="stock-info">
+                                        <h4>${getF("title")}</h4>
+                                        <p>${getF("engine")}</p>
+                                        <span class="price">${getF("price")}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }
+                } catch (e) {
+                    container.innerHTML = '<p style="color: white; text-align: center; grid-column: 1/-1;">Zapraszamy do zakładki Oferta.</p>';
+                }
+            }
+            loadIndexOffers();
+        </script>
     </section>
 
     <section id="atuty" class="features-section reveal">
