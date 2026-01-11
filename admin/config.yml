@@ -1,0 +1,22 @@
+backend:
+  name: git-gateway
+  branch: main # Upewnij się, że Twoja gałąź na GitHubie nazywa się main
+
+media_folder: "images/uploads" # Tu będą trafiać zdjęcia aut
+public_folder: "/images/uploads"
+
+collections:
+  - name: "auta"
+    label: "Oferty Aut"
+    folder: "content/auta" # Tu będą zapisywane pliki z danymi aut
+    create: true
+    slug: "{{year}}-{{title}}"
+    fields:
+      - {label: "Nazwa Auta", name: "title", widget: "string"}
+      - {label: "Status", name: "status", widget: "select", options: ["DOSTĘPNY", "W TRANSPORCIE", "REZERWACJA", "SPRZEDANY"]}
+      - {label: "Cena", name: "price", widget: "string"}
+      - {label: "Silnik", name: "engine", widget: "string"}
+      - {label: "Rok produkcji", name: "year", widget: "number"}
+      - {label: "Przebieg", name: "mileage", widget: "string"}
+      - {label: "Zdjęcie główne", name: "image", widget: "image"}
+      - {label: "Pełny opis", name: "body", widget: "markdown"}
